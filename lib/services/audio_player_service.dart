@@ -1075,6 +1075,7 @@ class AudioPlayerService {
   }
 
   void _maybeTriggerAutoCrossfade(Duration currentPosition) {
+    if (_jamsModeEnabled) return;
     if (_crossfadeDurationMs <= 0) return;
     if (_isCrossfading) return;
     if (_crossfadeTriggeredForTrack) return;

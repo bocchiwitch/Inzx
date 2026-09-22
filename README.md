@@ -1,78 +1,145 @@
 <div align="center">
-	<img src="assets/icon/logo_transparent.png" alt="Inzx Logo" width="200"/>
-<h1>Inzx</h1>
+	<img src="assets/brand_transparent.png" alt="Inzx Logo" width=""/>
 
-*A modern YouTube Music client with dynamic theming, word-level synced lyrics, and real-time Jam sessions*
+**A beautiful, open-source YouTube Music client for Android** — dynamic theming, word-level synced lyrics, AI lyric translation, high-quality streaming, and real-time listening sessions.
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.10.3-02569B?logo=flutter)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.10.3-0175C2?logo=dart)](https://dart.dev)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/nirmaleeswar30/Inzx?label=release&logo=github)](https://github.com/nirmaleeswar30/Inzx/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/nirmaleeswar30/Inzx/total?logo=github&color=success)](https://github.com/nirmaleeswar30/Inzx/releases)
+[![Flutter](https://img.shields.io/badge/Flutter-3-02569B?logo=flutter)](https://flutter.dev)
+[![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)](#installation)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-
-[Features](#features) • [Screenshots](#screenshots) • [Installation](#installation) • [Development](#development) • [Contributing](#contributing)
-
+[Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation) • [Build from Source](#-building-from-source) • [Contributing](#-contributing)
 
 </div>
 
 > [!WARNING]
-> Inzx is only available on the platforms listed here. It is not on the Play Store or any other websites claiming to provide official releases.  
-> 
-> If we ever publish Inzx on any additional platforms, it will be announced and updated here. Please avoid downloading unofficial or modified versions for your safety.
+> Inzx is **only** available on the platforms listed in this README. It is **not** on the Play Store or any other site claiming to offer official releases. If we ever publish to additional platforms, it will be announced here. Please avoid unofficial or modified builds for your safety.
 
 <div align="center">
 
-[<img src="assets/badge-obtainium.png" alt="Obtainium" height="40">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/nirmaleeswar30/Inzx/)⠀
-[<img src="assets/badge-github.png" alt="Get it on GitHub" height="40">](https://github.com/nirmaleeswar30/Inzx/releases/latest)⠀⠀
+[<img src="assets/badge-obtainium.png" alt="Get it on Obtainium" height="42">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/nirmaleeswar30/Inzx/)⠀
+[<img src="assets/badge-github.png" alt="Get it on GitHub" height="42">](https://github.com/nirmaleeswar30/Inzx/releases/latest)
 
 </div>
 
-## ❤️ Sponsors
 
-If you enjoy using Inzx, consider supporting the development!
-Your support helps keep the project alive and actively maintained.
+## ⚠️ Disclaimer
 
-[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-%23ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/nirmaleeswar30)
+Inzx is an independent, open-source project. It is **not affiliated with, endorsed by, or sponsored by** Google, YouTube, YouTube Music, JioSaavn, or any of their subsidiaries. We do not host any of our own content we only use publicly available data. All trademarks and content belong to their respective owners. Inzx is provided for personal and educational use — please respect the terms of service of the platforms you access.
 
-## Features
 
-### 🎧 Music Playback
-- **YouTube Music Integration** — Native InnerTube API engine for streaming millions of songs, playlists, albums, and artists
-- **Offline-First Architecture** — Intelligent caching for instant playback and offline listening
-- **Background Playback** — Full media notification controls and Android media session support
-- **Android Auto Support** — Native dashboard integration for safe in-car playback
-- **Audio Session Management** — Seamless audio focus, phone call handling, and crossfade support
-- **Gapless Playback & Stream Prefetching** — OuterTune-style prefetching for 0ms play latency
 
-### 🎨 Beautiful UI & Skeleton Loaders
-- **Material Design 3** — Clean, modern design system built for performance
-- **Skeletonizer Loading** — Smooth shimmer skeleton loaders across all main tabs and detail pages
-- **Instant Dynamic Colors** — 0ms album artwork color extraction with Hive & memory RAM caching
-- **Synced & Word-Level Lyrics** — High-precision word-level karaoke sync powered by BetterLyrics, LRCLib, YouTube Captions, and Genius
-- **Multi-language UI** — App UI localization and independent YouTube Music catalog region controls
-- **Full-Screen Now Playing & Stage View** — Interactive player with responsive layouts and fluid transitions
 
-### 👥 Collaborative Listening (Jams)
-- **Real-time Sync** — Listen together with friends in real-time powered by Supabase WebSockets
-- **Host & Participant Roles** — Granular permission control and participant management
-- **Shared Queue** — Collaborative queue editing and drag-to-reorder
-- **Live Playback Sync** — Position and state synchronization with drift correction
-- **"Last Controller Wins"** — Smart conflict resolution for multi-user control
+## ✨ Highlights
 
-### 📚 Music Library & Downloads
-- **YouTube Music Sync** — Access your saved playlists, liked songs, albums, and subscribed artists
-- **Local Device Files** — Scan and play local music files from device storage
-- **Custom Playlists** — Create and manage custom local playlists
-- **Download Manager** — Download tracks for offline playback with background progress tracking
-- **Dynamic Search** — Instant search with suggestions, history, and category filters
+A quick look at what makes Inzx stand out:
 
-### 🔒 Privacy & Security
-- **Offline-First** — Fully functional without continuous network connectivity
-- **Secure Credentials** — Encrypted local storage for auth tokens
-- **No Tracking** — Private listening without analytics telemetry
+<table width="100%">
+<tr><td align="center">
+
+🎤 **Word-level karaoke lyrics** — synced to the syllable, from 15+ providers<br>
+🌐 **AI lyric translation** — translate & transliterate live (OpenRouter · DeepL · Gemini)<br>
+🔊 **Studio-quality audio** — optional JioSaavn source, up to 320 kbps<br>
+🎨 **Instant dynamic theming** — 0 ms album-art colors, 10+ accents, custom wheel<br>
+🖼️ **Multiple Now Playing styles** — Default, Cinematic, Ripple & OG + waveform / spectrum scrubbers<br>
+🎞️ **Animated album art (Canvas)** — with ambient glow reflection backgrounds<br>
+👥 **Jams** — real-time synchronized listening with friends<br>
+🚗 **Android Auto & widgets** — plus home-screen widgets and instant OTA updates
+
+</td></tr>
+</table>
+
+
+## ❤️ Support Inzx
+
+Inzx is free and open source. If it makes your day a little better, consider supporting development — it keeps the project alive and actively maintained.
+
+<div align="center">
+
+[![Sponsor on GitHub](https://img.shields.io/badge/GitHub%20Sponsors-%E2%9D%A4-%23ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/nirmaleeswar30)
+
+**— or scan to pay via UPI —**
+
+<img src="assets/upi.jpeg" alt="UPI QR code" width="220"/>
+
+
+
+</div>
+
+
+## 🎯 Features
+
+<table width="100%">
+<tr><td align="center">
+
+### 🎧 Playback & Audio
+
+**YouTube Music engine** via native InnerTube API<br>
+**JioSaavn HQ source** — up to 320 kbps<br>
+**Prefer Audio Versions** — auto-skip music videos<br>
+**Gapless playback & stream prefetching** for near-zero latency<br>
+**Crossfade** with adjustable duration<br>
+**Background playback** — notification, lock-screen & media session<br>
+**Smart audio routing** — shows the active output device<br>
+**Robust audio session** — focus, calls & Bluetooth handled
+
+### 🎤 Lyrics
+
+**Word-level synced (karaoke) lyrics** via BetterLyrics TTML<br>
+**15+ providers with smart fallback** — LRCLib, Genius, KuGou, Musixmatch, Megalobiz, YouTube captions, embedded & local…<br>
+**AI translation & transliteration** — OpenRouter, DeepL, Gemini (BYO key)<br>
+**Line & word offset tuning**<br>
+**Instrumental gaps & background vocals**
+
+### 🎨 Interface & Now Playing
+
+**Instant dynamic colors** — 0 ms isolate palette + caching<br>
+**Material 3** with 10+ accents & custom color wheel<br>
+**Now Playing styles** — Default, Cinematic, Ripple, OG<br>
+**Progress bar styles** — linear, waveform, spectrum<br>
+**Animated album art (Canvas)** with ambient reflections<br>
+**Liquid-glass nav, rotating mini-player art & lyric preview**<br>
+**Skeletonizer** shimmer loading everywhere<br>
+**Localized UI** in 20+ languages with catalog-region control
+
+### 👥 Jams — Collaborative Listening
+
+**Real-time sync** via Supabase WebSockets<br>
+**Host & participant roles** with granular permissions<br>
+**Shared queue** — collaborative edit & drag-to-reorder<br>
+**Live playback sync** with drift correction<br>
+**"Last controller wins"** conflict resolution
+
+### 📚 Library, Search & Downloads
+
+**YouTube Music sync** — playlists, likes, albums, artists<br>
+**Local files** organized by folders<br>
+**Custom playlists**<br>
+**Download manager** with background progress<br>
+**Podcasts** — browse & play episodes<br>
+**Dynamic search** — suggestions, history & filters
+
+### 📱 Platform & System
+
+**Android Auto** dashboard integration<br>
+**Home-screen widgets** — compact (4×1) & expanded (4×2)<br>
+**Instant OTA updates** via Shorebird code push<br>
+**Backup & restore** app data<br>
+**Deep links & sharing** for tracks, albums & playlists
+
+### 🔒 Privacy
+
+**Offline-first** — usable without a connection<br>
+**Encrypted credentials** via secure storage<br>
+**No third-party tracking** — no analytics telemetry
+
+</td></tr>
+</table>
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
 <div align="center">
 
@@ -85,22 +152,17 @@ Your support helps keep the project alive and actively maintained.
 </div>
 
 <table width="100%">
-<tr>
-<th align="center">Better Lyrics</th>
-</tr>
-<tr>
-<td align="center"><img src="./.github/screenshots/output.gif" width="100%"></td>
-</tr>
+<tr><th align="center">Word-Level Synced Lyrics</th></tr>
+<tr><td align="center"><img src="./.github/screenshots/output.gif" width="100%"></td></tr>
 </table>
-
 
 <div align="center">
 
-| **Widget 4x1** | **Widget 4x2** |
+| **Widget 4×1** | **Widget 4×2** |
 |:---:|:---:|
 | ![Widget 4x1](./.github/screenshots/widget-4x1.png) | ![Widget 4x2](./.github/screenshots/widget-4x2.png) |
 
-| **Android Auto** | **Android Auto - Now Playing** |
+| **Android Auto** | **Android Auto — Now Playing** |
 |:---:|:---:|
 | ![Android Auto](./.github/screenshots/android_auto.png) | ![Android Auto - Now Playing](./.github/screenshots/android_auto-nowplaying.png) |
 
@@ -108,26 +170,32 @@ Your support helps keep the project alive and actively maintained.
 
 ---
 
-## Installation
+## 📥 Installation
 
-#### Download from GitHub Releases
-Download the latest release APK from the [Releases](../../releases) page.
+Inzx supports **Android**. Grab the latest APK one of two ways:
 
-#### Installation via ADB
+- **Obtainium** (recommended) — auto-updates directly from GitHub releases. Use the badge above or add this repo:
+  `https://github.com/nirmaleeswar30/Inzx`
+- **GitHub Releases** — download the APK from the [latest release](https://github.com/nirmaleeswar30/Inzx/releases/latest).
+
+Once installed, Inzx delivers smaller patches automatically via over-the-air (OTA) updates, so you stay current without reinstalling.
+
+<details>
+<summary>Install via ADB</summary>
+
 ```bash
 adb install app-release.apk
 ```
+</details>
 
 ---
 
-## Building from Source
+## 🛠️ Building from Source
 
 ### Prerequisites
-- **Flutter SDK** (3.10.3 or higher)
-- **Dart SDK** (3.10.3 or higher)
-- **Android Studio** or **VS Code** with Flutter extensions
-- **Android SDK** (for Android builds)
-- **Git**
+- **Flutter SDK** (stable channel, bundling **Dart**)
+- **Android Studio** or **VS Code** with the Flutter/Dart extensions
+- **Android SDK** and **Git**
 
 ### Setup
 
@@ -148,96 +216,103 @@ adb install app-release.apk
    flutter gen-l10n
    ```
 
-4. **Configure Environment Variables**
-   - Create a `.env` file in the root directory:
-     ```bash
-     cp .env.example .env
-     ```
+4. **Configure environment variables** — copy the example and fill in the values:
+   ```bash
+   cp .env.example .env
+   ```
+   | Variable | Purpose |
+   |---|---|
+   | `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Real-time backend for **Jams** |
+   | `GOOGLE_WEB_CLIENT_ID` | Google Sign-In for Jam profiles |
+   | `GITHUB_RELEASE_REPO` | Repo checked for GitHub release updates |
 
-5. **Configure Supabase** (for Jams feature)
-   - Create a Supabase project at [supabase.com](https://supabase.com)
-   - Enable Realtime in your Supabase project settings
-   - Update `SUPABASE_URL` and `SUPABASE_ANON_KEY` in your `.env` file
+   > Jams and Google Sign-In are optional — the rest of the app builds and runs without them.
 
-6. **Configure Google Sign-In** (for Jams user profiles)
-   - Create an OAuth 2.0 Web Client ID on Google Cloud Console
-   - Update `GOOGLE_WEB_CLIENT_ID` in your `.env` file
+5. **(Optional) Configure Supabase** for Jams — create a project at [supabase.com](https://supabase.com), enable Realtime, and paste the URL and anon key into `.env`.
+
+6. **(Optional) Configure Google Sign-In** — create an OAuth 2.0 Web Client ID in the Google Cloud Console and set `GOOGLE_WEB_CLIENT_ID`.
 
 ### Build Commands
 
 ```bash
-# Run in debug mode
+# Debug run
 flutter run
 
-# Build release APK
+# Release APK
 flutter build apk --release
 
-# Build split APKs per ABI
+# Split APKs per ABI (smaller downloads)
 flutter build apk --split-per-abi --release
 ```
 
 ---
 
-## Architecture & Tech Stack
+## 🏗️ Architecture & Tech Stack
 
-### 🏗️ Tech Stack
+**Core** — Flutter · Dart · [Riverpod](https://riverpod.dev) (state management)
 
-#### Core Framework
-- **Flutter** — UI framework
-- **Dart** — Language
-- **Riverpod** — State management with code generation
+**Data & storage** — [Hive](https://pub.dev/packages/hive) (fast local cache for tracks, playlists & colors) · Flutter Secure Storage (encrypted credentials) · Shared Preferences (settings) · [Supabase](https://supabase.com) (real-time Jams backend)
 
-#### Data & Storage
-- **Hive** — Fast NoSQL database for local caching of tracks, playlists, and colors
-- **Flutter Secure Storage** — Encrypted storage for credentials
-- **Supabase** — Real-time WebSockets backend for Jams
-- **Shared Preferences** — App configuration & settings
+**Audio & catalog** — Custom **InnerTube API** engine · [just_audio](https://pub.dev/packages/just_audio) · [audio_service](https://pub.dev/packages/audio_service) (background/media controls) · [audio_session](https://pub.dev/packages/audio_session) · JioSaavn HQ source (DES-decrypted stream URLs)
 
-#### Audio & InnerTube API
-- **InnerTube API Engine** — Direct API integration for YouTube Music catalog, playback streams, shelves, and metadata
-- **just_audio** — Audio player engine with buffering and stream caching
-- **audio_service** — Background media controls & notification integration
-- **audio_session** — Audio focus management
+**UI & media** — [Skeletonizer](https://pub.dev/packages/skeletonizer) · isolate-based `AlbumColorExtractor` (0 ms palette) · [Iconsax](https://pub.dev/packages/iconsax) · Cached Network Image · `video_player` (Canvas art) · Marquee
 
-#### UI & Design System
-- **Skeletonizer** — Automatic shimmer skeleton loaders across all screens
-- **AlbumColorExtractor** — Fast 0ms isolate-based palette color extraction
-- **Iconsax** — Icon set
-- **Cached Network Image** — Image caching & management
-- **Marquee** — Scrolling text for long titles
+**Delivery** — [Shorebird](https://shorebird.dev) code push for OTA updates
 
 ---
 
-## Multi-language Support
+## 🌍 Localization
 
-Inzx supports localized app UI and locale-aware YouTube Music content requests.
+Inzx ships a fully localized UI and locale-aware YouTube Music content requests in **20+ languages**:
 
-**Supported languages:**
-English, Turkish, Russian, Hindi, Malayalam, Tamil, Kannada, Telugu, Spanish, Portuguese (Brazil), French, German, Indonesian, Japanese, Korean, Arabic, Ukrainian, Thai, Simplified Chinese, Traditional Chinese.
+English · Arabic · German · Spanish · French · Hindi · Indonesian · Japanese · Kannada · Korean · Malayalam · Portuguese · Portuguese (Brazil) · Russian · Tamil · Telugu · Thai · Turkish · Ukrainian · Simplified Chinese · Traditional Chinese
 
----
-
-## Roadmap
-
-- [x] **Crossfade** — Smooth transitions between tracks
-- [x] **Android Auto** — Dashboard car integration
-- [x] **Skeleton Loaders** — App-wide Skeletonizer loading placeholders
-- [x] **Word-Level Synced Lyrics** — BetterLyrics TTML karaoke engine
-- [ ] **Chromecast support** — Cast playback to external speakers
-- [ ] **Desktop support** — Windows, macOS, Linux desktop targets
+Translations live in [`lib/l10n`](lib/l10n). Contributions and corrections are very welcome — see [Contributing](#-contributing).
 
 ---
 
-## Acknowledgments
+## 🗺️ Roadmap
 
-- [OuterTune](https://github.com/OuterTune/OuterTune) — Kotlin music client design reference
+- [x] Word-level synced lyrics (BetterLyrics TTML engine)
+- [x] AI lyric translation & transliteration
+- [x] JioSaavn high-quality audio source
+- [x] Crossfade & gapless prefetching
+- [x] Android Auto
+- [x] Home-screen widgets
+- [x] Multiple Now Playing & progress-bar styles
+- [x] Over-the-air updates (Shorebird)
+- [ ] Chromecast / cast to external speakers
+- [ ] Desktop targets (Windows · macOS · Linux)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Bug reports, feature ideas, translations and pull requests all help.
+
+1. Fork the repo and create a branch off `main`.
+2. Make your changes and run `flutter analyze` (keep it clean).
+3. Open a pull request describing what and why.
+
+For larger features, please open an issue first so we can align on the approach.
+
+---
+
+## 🙏 Acknowledgments
+
+- [OuterTune](https://github.com/OuterTune/OuterTune) & [InnerTune](https://github.com/z-huang/InnerTune) — design and architecture inspiration
+- [BetterLyrics](https://github.com/boidushya/better-lyrics) — word-level synced lyrics
+- [LRCLib](https://lrclib.net) — open synced-lyrics database
+- [Metrolist](https://lrclib.net) — Kotlin based ytm client
+- [Bitchord](https://lrclib.net) — another kotlin ytm client built on top of metrolist
+- [just_audio](https://pub.dev/packages/just_audio) — audio playback engine
+- [Supabase](https://supabase.com) — real-time infrastructure
+- [Shorebird](https://shorebird.dev) — Flutter over-the-air updates
 - [Flutter](https://flutter.dev) — UI framework
-- [just_audio](https://pub.dev/packages/just_audio) — Audio player package
-- [Supabase](https://supabase.com) — Real-time infrastructure
-- [BetterLyrics](https://github.com/nirmaleeswar30/Inzx) — Word-level synced lyrics API
 
 ---
 
-## License
+## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE).
+

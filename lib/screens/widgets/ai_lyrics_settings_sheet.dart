@@ -64,7 +64,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
 
     if (key.trim().isEmpty) {
       _showToast('Please enter an API Key to use AI Lyrics Translation.', Colors.red.shade800);
-      ref.read(aiLyricsTranslationEnabledProvider.notifier).state = false;
+      ref.read(aiLyricsTranslationEnabledProvider.notifier).set(false);
       return;
     }
 
@@ -81,7 +81,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
 
     if (!isReachable) {
       _showToast('Could not connect to ${provider.displayName} API. Check key or network.', Colors.red.shade800);
-      ref.read(aiLyricsTranslationEnabledProvider.notifier).state = false;
+      ref.read(aiLyricsTranslationEnabledProvider.notifier).set(false);
       return;
     }
 
@@ -129,7 +129,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                           secondary: const Icon(Iconsax.translate),
                           value: enabled,
                           onChanged: (val) {
-                            ref.read(aiLyricsTranslationEnabledProvider.notifier).state = val;
+                            ref.read(aiLyricsTranslationEnabledProvider.notifier).set(val);
                             if (val) {
                               _triggerTranslation();
                             }
@@ -145,8 +145,8 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                             }).toList(),
                             onChanged: (val) {
                               if (val != null) {
-                                ref.read(aiTranslationProviderKeyProvider.notifier).state = val;
-                                ref.read(aiTranslationModelProvider.notifier).state = val.defaultModel;
+                                ref.read(aiTranslationProviderKeyProvider.notifier).set(val);
+                                ref.read(aiTranslationModelProvider.notifier).set(val.defaultModel);
                               }
                             },
                           ),
@@ -158,7 +158,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                               controller: _deepLKeyController,
                               decoration: const InputDecoration(labelText: 'DeepL API Key', border: OutlineInputBorder()),
                               obscureText: true,
-                              onChanged: (val) => ref.read(aiTranslationDeepLKeyProvider.notifier).state = val,
+                              onChanged: (val) => ref.read(aiTranslationDeepLKeyProvider.notifier).set(val),
                             ),
                           )
                         else
@@ -171,7 +171,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                                 border: const OutlineInputBorder(),
                               ),
                               obscureText: true,
-                              onChanged: (val) => ref.read(aiTranslationOpenRouterKeyProvider.notifier).state = val,
+                              onChanged: (val) => ref.read(aiTranslationOpenRouterKeyProvider.notifier).set(val),
                             ),
                           ),
                         if (provider.availableModels.isNotEmpty) ...[
@@ -208,7 +208,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                                     setState(() => _showCustomModelInput = true);
                                   } else {
                                     setState(() => _showCustomModelInput = false);
-                                    ref.read(aiTranslationModelProvider.notifier).state = val;
+                                    ref.read(aiTranslationModelProvider.notifier).set(val);
                                     _customModelController.text = val;
                                   }
                                 }
@@ -226,7 +226,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                                   border: const OutlineInputBorder(),
                                   isDense: true,
                                 ),
-                                onChanged: (val) => ref.read(aiTranslationModelProvider.notifier).state = val,
+                                onChanged: (val) => ref.read(aiTranslationModelProvider.notifier).set(val),
                               ),
                             ),
                         ],
@@ -239,7 +239,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                               DropdownMenuItem(value: 'Transcribed', child: Text('Romanized / Transcribed')),
                             ],
                             onChanged: (val) {
-                              if (val != null) ref.read(aiTranslationModeProvider.notifier).state = val;
+                              if (val != null) ref.read(aiTranslationModeProvider.notifier).set(val);
                             },
                           ),
                         ),
@@ -258,7 +258,7 @@ class _AiLyricsSettingsSheetState extends ConsumerState<AiLyricsSettingsSheet> {
                                 DropdownMenuItem(value: 'pt', child: Text('Portuguese')),
                               ],
                               onChanged: (val) {
-                                if (val != null) ref.read(aiTranslationLanguageProvider.notifier).state = val;
+                                if (val != null) ref.read(aiTranslationLanguageProvider.notifier).set(val);
                               },
                             ),
                           ),

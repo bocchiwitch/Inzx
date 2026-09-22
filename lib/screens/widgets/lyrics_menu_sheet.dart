@@ -2,19 +2,119 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/lyrics/lyrics_service.dart';
 import '../../services/lyrics/lyrics_translation_service.dart';
 import '../../providers/music_providers.dart';
 import 'lyrics_provider_sheet.dart';
 
+// AI translation preferences. These are persisted to SharedPreferences so the
+// user's API keys and settings survive app restarts. Update them via the
+// notifier's `set(...)` method (e.g. `ref.read(provider.notifier).set(value)`).
+
+/// Persists a [String] preference (e.g. an API key) under [_key].
+class _PersistedStringNotifier extends StateNotifier<String> {
+  final String _key;
+
+  _PersistedStringNotifier(this._key, String initial) : super(initial) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final value = prefs.getString(_key);
+      if (value != null) state = value;
+    } catch (_) {}
+  }
+
+  Future<void> set(String value) async {
+    state = value;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_key, value);
+    } catch (_) {}
+  }
+}
+
+/// Persists a [bool] preference under [_key].
+class _PersistedBoolNotifier extends StateNotifier<bool> {
+  final String _key;
+
+  _PersistedBoolNotifier(this._key, bool initial) : super(initial) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final value = prefs.getBool(_key);
+      if (value != null) state = value;
+    } catch (_) {}
+  }
+
+  Future<void> set(bool value) async {
+    state = value;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_key, value);
+    } catch (_) {}
+  }
+}
+
+/// Persists the selected [TranslationProvider] (by enum index) under [_key].
+class _PersistedTranslationProviderNotifier
+    extends StateNotifier<TranslationProvider> {
+  static const String _key = 'inzx_ai_translation_provider';
+
+  _PersistedTranslationProviderNotifier()
+      : super(TranslationProvider.openRouter) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final index = prefs.getInt(_key);
+      if (index != null &&
+          index >= 0 &&
+          index < TranslationProvider.values.length) {
+        state = TranslationProvider.values[index];
+      }
+    } catch (_) {}
+  }
+
+  Future<void> set(TranslationProvider value) async {
+    state = value;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_key, value.index);
+    } catch (_) {}
+  }
+}
+
 // Provides preferences
-final aiLyricsTranslationEnabledProvider = StateProvider<bool>((ref) => false);
-final aiTranslationProviderKeyProvider = StateProvider<TranslationProvider>((ref) => TranslationProvider.openRouter);
-final aiTranslationModeProvider = StateProvider<String>((ref) => 'Literal');
-final aiTranslationLanguageProvider = StateProvider<String>((ref) => 'en');
-final aiTranslationOpenRouterKeyProvider = StateProvider<String>((ref) => '');
-final aiTranslationDeepLKeyProvider = StateProvider<String>((ref) => '');
-final aiTranslationModelProvider = StateProvider<String>((ref) => '');
+final aiLyricsTranslationEnabledProvider =
+    StateNotifierProvider<_PersistedBoolNotifier, bool>(
+        (ref) => _PersistedBoolNotifier('inzx_ai_translation_enabled', false));
+final aiTranslationProviderKeyProvider = StateNotifierProvider<
+        _PersistedTranslationProviderNotifier, TranslationProvider>(
+    (ref) => _PersistedTranslationProviderNotifier());
+final aiTranslationModeProvider =
+    StateNotifierProvider<_PersistedStringNotifier, String>(
+        (ref) => _PersistedStringNotifier('inzx_ai_translation_mode', 'Literal'));
+final aiTranslationLanguageProvider =
+    StateNotifierProvider<_PersistedStringNotifier, String>(
+        (ref) => _PersistedStringNotifier('inzx_ai_translation_language', 'en'));
+final aiTranslationOpenRouterKeyProvider =
+    StateNotifierProvider<_PersistedStringNotifier, String>((ref) =>
+        _PersistedStringNotifier('inzx_ai_translation_openrouter_key', ''));
+final aiTranslationDeepLKeyProvider =
+    StateNotifierProvider<_PersistedStringNotifier, String>((ref) =>
+        _PersistedStringNotifier('inzx_ai_translation_deepl_key', ''));
+final aiTranslationModelProvider =
+    StateNotifierProvider<_PersistedStringNotifier, String>(
+        (ref) => _PersistedStringNotifier('inzx_ai_translation_model', ''));
 
 
 

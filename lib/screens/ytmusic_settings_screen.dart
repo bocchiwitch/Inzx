@@ -15,6 +15,7 @@ import '../../core/providers/theme_provider.dart';
 import '../../main.dart';
 import 'ytmusic_login_screen.dart';
 import 'audio_settings_screen.dart';
+import 'player_appearance_screen.dart';
 import 'download_settings_screen.dart';
 import 'backup_restore_screen.dart';
 import 'logs_screen.dart';
@@ -26,7 +27,6 @@ import '../services/github_release_update_service.dart';
 import '../services/shorebird_update_service.dart';
 import 'widgets/whats_new_dialog.dart';
 import 'widgets/color_picker_dialog.dart';
-import 'widgets/ai_lyrics_settings_sheet.dart';
 
 /// Provider for sync service
 final ytMusicSyncServiceProvider = Provider<YTMusicSyncService>((ref) {
@@ -168,6 +168,98 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
         subtitle: l10n.restoreBackupSubtitle,
         icon: Iconsax.import_1,
         screen: const BackupRestoreScreen(),
+      ),
+      // Player & Now Playing appearance
+      _SearchableItem(
+        tags: [
+          'now playing style',
+          'player',
+          'ripple',
+          'cinematic',
+          'edge',
+          'layout',
+        ],
+        title: l10n.nowPlayingStyle,
+        subtitle: getNowPlayingStyleName(ref.watch(nowPlayingStyleProvider)),
+        icon: Icons.art_track_rounded,
+        screen: const PlayerAppearanceScreen(),
+      ),
+      _SearchableItem(
+        tags: [
+          'progress bar',
+          'waveform',
+          'audio waveform',
+          'scrubber',
+          'spectrum',
+          'seek',
+        ],
+        title: l10n.progressBarStyle,
+        subtitle: getProgressBarStyleName(ref.watch(progressBarStyleProvider)),
+        icon: Icons.graphic_eq_rounded,
+        screen: const PlayerAppearanceScreen(),
+      ),
+      _SearchableItem(
+        tags: ['liquid glass', 'glass', 'navbar', 'nav', 'blur'],
+        title: l10n.liquidGlass,
+        subtitle: l10n.liquidGlassSubtitle,
+        icon: Icons.water_drop_rounded,
+        screen: const PlayerAppearanceScreen(),
+      ),
+      _SearchableItem(
+        tags: [
+          'animated album art',
+          'canvas',
+          'motion',
+          'rotate',
+          'rotating album art',
+          'miniplayer',
+          'ambient',
+          'reflection',
+        ],
+        title: l10n.animatedAlbumArt,
+        subtitle: l10n.animatedAlbumArtSubtitle,
+        icon: Icons.play_circle_outline_rounded,
+        screen: const PlayerAppearanceScreen(),
+      ),
+      _SearchableItem(
+        tags: [
+          'lyrics',
+          'lyrics below album art',
+          'ai lyrics',
+          'translation',
+          'translate',
+          'transliterate',
+        ],
+        title: l10n.lyricsBelowAlbumArt,
+        subtitle: l10n.lyricsBelowAlbumArtSubtitle,
+        icon: Iconsax.text,
+        screen: const PlayerAppearanceScreen(),
+      ),
+      // Audio playback behavior
+      _SearchableItem(
+        tags: [
+          'prefer audio versions',
+          'audio version',
+          'skip music video',
+          'official audio',
+        ],
+        title: l10n.preferAudioVersions,
+        subtitle: l10n.preferAudioVersionsSubtitle,
+        icon: Iconsax.music,
+        screen: const AudioSettingsScreen(),
+      ),
+      _SearchableItem(
+        tags: [
+          'smart audio routing',
+          'audio output',
+          'output device',
+          'bluetooth',
+          'speaker',
+        ],
+        title: l10n.smartAudioRouting,
+        subtitle: l10n.smartAudioRoutingSubtitle,
+        icon: Iconsax.volume_high,
+        screen: const AudioSettingsScreen(),
       ),
     ];
   }
@@ -397,13 +489,7 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
     context.l10n.contentLocation,
     context.l10n.dynamicColorsNote,
     context.l10n.accentColor,
-    context.l10n.nowPlayingStyle,
-    context.l10n.progressBarStyle,
-    context.l10n.liquidGlass,
-    context.l10n.animatedAlbumArt,
-    context.l10n.lyricsBelowAlbumArt,
     context.l10n.statsForNerds,
-    context.l10n.shareYoutubeMusicLinks,
     'appearance',
     'theme',
     'dark',
@@ -411,28 +497,11 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
     'mode',
     'accent color',
     'color',
-    'now playing style',
-    'progress bar',
-    'waveform',
-    'audio waveform',
-    'scrubber',
-    'liquid glass',
-    'glass',
-    'navbar',
-    'nav',
-    'rotate',
-    'rotating album art',
-    'miniplayer',
-    'animated album art',
-    'canvas',
-    'motion',
-    'lyrics',
-    'lyrics below album art',
+    // Player & Now Playing sub-screen (discoverable from Appearance)
+    'player',
+    'now playing',
     'stats for nerds',
     'nerd stats',
-    'share',
-    'youtube music links',
-    'native links',
     'content location',
     'region',
     'country',
@@ -475,12 +544,16 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
     _TaggedSection([
       context.l10n.appInfo,
       context.l10n.settings,
+      context.l10n.shareYoutubeMusicLinks,
       'app',
       'info',
       'ota',
       'patch',
       'version',
       'update',
+      'share',
+      'youtube music links',
+      'native links',
     ], _buildOtaDebugSection()),
   ];
 
@@ -557,12 +630,16 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
     _TaggedSection([
       context.l10n.appInfo,
       context.l10n.settings,
+      context.l10n.shareYoutubeMusicLinks,
       'app',
       'info',
       'ota',
       'patch',
       'version',
       'update',
+      'share',
+      'youtube music links',
+      'native links',
     ], _buildOtaDebugSection()),
     _TaggedSection([
       context.l10n.signOut,
@@ -970,7 +1047,18 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 18),
+
+        // Language & Region
+        Text(
+          l10n.languageAndRegion,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: _textSecondary,
+          ),
+        ),
+        const SizedBox(height: 6),
         _settingsTile(
           icon: Iconsax.language_square,
           iconBg: _accentColor,
@@ -993,162 +1081,30 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
           height: 1,
           color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
         ),
+        // Player & Now Playing — dedicated screen for the many player
+        // appearance options (style, progress bar, album art motion, lyrics).
         _settingsTile(
-          icon: Icons.art_track_rounded,
+          icon: Icons.play_circle_fill_rounded,
           iconBg: _accentColor,
-          title: l10n.nowPlayingStyle,
-          subtitle:
-              '${getNowPlayingStyleName(ref.watch(nowPlayingStyleProvider))} • ${getNowPlayingStyleDescription(ref.watch(nowPlayingStyleProvider))}',
-          onTap: _showNowPlayingStyleSelector,
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _settingsTile(
-          icon: Icons.graphic_eq_rounded,
-          iconBg: _accentColor,
-          title: l10n.progressBarStyle,
-          subtitle:
-              '${getProgressBarStyleName(ref.watch(progressBarStyleProvider))} • ${getProgressBarStyleDescription(ref.watch(progressBarStyleProvider))}',
-          onTap: _showProgressBarStyleSelector,
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _switchTile(
-          icon: Icons.water_drop_rounded,
-          iconBg: _accentColor,
-          title: l10n.liquidGlass,
-          subtitle: l10n.liquidGlassSubtitle,
-          value: ref.watch(liquidGlassNavProvider),
-          onChanged: (val) =>
-              ref.read(liquidGlassNavProvider.notifier).setEnabled(val),
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _switchTile(
-          icon: Icons.rotate_right_rounded,
-          iconBg: _accentColor,
-          title: l10n.rotatingMiniplayerArt,
-          subtitle: l10n.rotatingMiniplayerArtSubtitle,
-          value: ref.watch(rotatingMiniPlayerArtProvider),
-          onChanged: (val) =>
-              ref.read(rotatingMiniPlayerArtProvider.notifier).setEnabled(val),
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _switchTile(
-          icon: Icons.play_circle_outline_rounded,
-          iconBg: _accentColor,
-          title: l10n.animatedAlbumArt,
-          subtitle: l10n.animatedAlbumArtSubtitle,
-          value: ref.watch(animatedAlbumArtProvider),
-          onChanged: (val) =>
-              ref.read(animatedAlbumArtProvider.notifier).setEnabled(val),
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        if (ref.watch(animatedAlbumArtProvider) && ref.watch(nowPlayingStyleProvider) == NowPlayingStyle.edge)
-          Column(
-            children: [
-              _switchTile(
-                icon: Icons.blur_on_rounded,
-                iconBg: _accentColor,
-                title: 'Ambient Reflection Only for Canvas',
-                subtitle: 'Only show the glowing reflection background when an animated album cover is available.',
-                value: ref.watch(cinematicAmbientOnlyForAnimatedArtProvider),
-                onChanged: (val) =>
-                    ref.read(cinematicAmbientOnlyForAnimatedArtProvider.notifier).toggle(),
-              ),
-              Divider(
-                height: 1,
-                color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-              ),
-            ],
+          title: l10n.playerAndNowPlaying,
+          subtitle: l10n.playerAndNowPlayingSubtitle,
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PlayerAppearanceScreen()),
           ),
-        if (ref.watch(animatedAlbumArtProvider) && ref.watch(nowPlayingStyleProvider) != NowPlayingStyle.edge)
-          Column(
-            children: [
-              _switchTile(
-                icon: Icons.blur_circular_rounded,
-                iconBg: _accentColor,
-                title: 'Dynamic Ambient Theming for Canvas',
-                subtitle: 'Show a soft glowing reflection background when an animated album cover is playing.',
-                value: ref.watch(dynamicAmbientBackgroundForAnimatedArtProvider),
-                onChanged: (val) =>
-                    ref.read(dynamicAmbientBackgroundForAnimatedArtProvider.notifier).toggle(),
-              ),
-              Divider(
-                height: 1,
-                color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-              ),
-            ],
+        ),
+        const SizedBox(height: 18),
+
+        // Advanced
+        Text(
+          l10n.advanced,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: _textSecondary,
           ),
-        _switchTile(
-          icon: Iconsax.volume_high,
-          iconBg: _accentColor,
-          title: 'Smart Audio Routing',
-          subtitle: 'Show active audio output under playback controls',
-          value: ref.watch(showSmartAudioRoutingProvider),
-          onChanged: (val) =>
-              ref.read(showSmartAudioRoutingProvider.notifier).setEnabled(val),
         ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _switchTile(
-          icon: Iconsax.music,
-          iconBg: _accentColor,
-          title: 'Prefer Audio Versions',
-          subtitle: 'Automatically skip music videos and play the official audio version',
-          value: ref.watch(preferAudioVersionsProvider),
-          onChanged: (val) =>
-              ref.read(preferAudioVersionsProvider.notifier).setEnabled(val),
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _switchTile(
-          icon: Iconsax.text,
-          iconBg: _accentColor,
-          title: l10n.lyricsBelowAlbumArt,
-          subtitle: l10n.lyricsBelowAlbumArtSubtitle,
-          value: ref.watch(showLyricsBelowAlbumArtProvider),
-          onChanged: (val) =>
-              ref.read(showLyricsBelowAlbumArtProvider.notifier).setEnabled(val),
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _settingsTile(
-          icon: Iconsax.translate,
-          iconBg: _accentColor,
-          title: 'AI Lyrics Translation',
-          subtitle: 'Configure AI providers and languages for real-time translation',
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (context) => const AiLyricsSettingsSheet(),
-            );
-          },
-        ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
+        const SizedBox(height: 6),
         _switchTile(
           icon: Iconsax.status,
           iconBg: _accentColor,
@@ -1158,380 +1114,7 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
           onChanged: (val) =>
               ref.read(audioPlayerServiceProvider).setShowNerdStats(val),
         ),
-        Divider(
-          height: 1,
-          color: _isDark ? InzxColors.darkDivider : InzxColors.divider,
-        ),
-        _switchTile(
-          icon: Iconsax.share,
-          iconBg: _accentColor,
-          title: l10n.shareYoutubeMusicLinks,
-          subtitle: l10n.shareYoutubeMusicLinksSubtitle,
-          value: ref.watch(shareNativeLinksProvider),
-          onChanged: (val) =>
-              ref.read(shareNativeLinksProvider.notifier).setEnabled(val),
-        ),
       ],
-    );
-  }
-
-  Future<void> _showNowPlayingStyleSelector() async {
-    final currentStyle = ref.read(nowPlayingStyleProvider);
-    final sheetBg = _isDark ? Colors.black : Colors.white;
-
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: sheetBg,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (sheetContext) {
-        return SafeArea(
-          top: false,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(sheetContext).size.height * 0.85,
-            ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 36,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: _isDark ? Colors.white24 : Colors.black12,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Container(
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          color: _accentColor.withValues(alpha: 0.14),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.art_track_rounded,
-                          size: 20,
-                          color: _accentColor,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        context.l10n.nowPlayingStyle,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: _textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ...NowPlayingStyle.values.map((style) {
-                    final isSelected = style == currentStyle;
-                    final title = getNowPlayingStyleName(style);
-                    final desc = getNowPlayingStyleDescription(style);
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Material(
-                        color: isSelected
-                            ? _accentColor.withValues(alpha: 0.12)
-                            : (_isDark
-                                ? const Color(0xFF141416)
-                                : const Color(0xFFF5F5F7)),
-                        borderRadius: BorderRadius.circular(16),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            ref
-                                .read(nowPlayingStyleProvider.notifier)
-                                .setStyle(style);
-                            Navigator.pop(sheetContext);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isSelected
-                                    ? _accentColor
-                                    : (_isDark
-                                        ? Colors.white.withValues(alpha: 0.08)
-                                        : InzxColors.border.withValues(alpha: 0.3)),
-                                width: isSelected ? 1.8 : 1.0,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? _accentColor.withValues(alpha: 0.22)
-                                        : (_isDark
-                                            ? Colors.white.withValues(alpha: 0.06)
-                                            : Colors.black.withValues(alpha: 0.05)),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Icon(
-                                    style == NowPlayingStyle.ripple
-                                        ? Icons.filter_vintage_rounded
-                                        : (style == NowPlayingStyle.edge
-                                            ? Icons.splitscreen_rounded
-                                            : (style == NowPlayingStyle.og
-                                                ? Icons.view_headline_rounded
-                                                : Icons.crop_square_rounded)),
-                                    color: isSelected
-                                        ? _accentColor
-                                        : _textPrimary.withValues(alpha: 0.8),
-                                    size: 24,
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        title,
-                                        style: TextStyle(
-                                          fontSize: 15.5,
-                                          fontWeight: FontWeight.w700,
-                                          color: isSelected
-                                              ? _accentColor
-                                              : _textPrimary,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        desc,
-                                        style: TextStyle(
-                                          fontSize: 12.5,
-                                          height: 1.3,
-                                          color: _textSecondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                if (isSelected)
-                                  Icon(
-                                    Icons.check_circle_rounded,
-                                    color: _accentColor,
-                                    size: 22,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                  const SizedBox(height: 8),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _showProgressBarStyleSelector() async {
-    final currentStyle = ref.read(progressBarStyleProvider);
-    final sheetBg = _isDark ? Colors.black : Colors.white;
-
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: sheetBg,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (sheetContext) {
-        return SafeArea(
-          top: false,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(sheetContext).size.height * 0.85,
-            ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 36,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: _isDark ? Colors.white24 : Colors.black12,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Container(
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          color: _accentColor.withValues(alpha: 0.14),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.graphic_eq_rounded,
-                          size: 20,
-                          color: _accentColor,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Progress Bar Style',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: _textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ...ProgressBarStyle.values.map((style) {
-                    final isSelected = style == currentStyle;
-                    final title = getProgressBarStyleName(style);
-                    final desc = getProgressBarStyleDescription(style);
-
-                    final IconData styleIcon;
-                    switch (style) {
-                      case ProgressBarStyle.defaultLinear:
-                        styleIcon = Icons.linear_scale_rounded;
-                        break;
-                      case ProgressBarStyle.waveform:
-                        styleIcon = Icons.waves_rounded;
-                        break;
-                      case ProgressBarStyle.spectrum:
-                        styleIcon = Icons.graphic_eq_rounded;
-                        break;
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Material(
-                        color: isSelected
-                            ? _accentColor.withValues(alpha: 0.12)
-                            : (_isDark
-                                ? const Color(0xFF141416)
-                                : const Color(0xFFF5F5F7)),
-                        borderRadius: BorderRadius.circular(16),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            ref
-                                .read(progressBarStyleProvider.notifier)
-                                .setStyle(style);
-                            Navigator.pop(sheetContext);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isSelected
-                                    ? _accentColor
-                                    : (_isDark
-                                        ? Colors.white.withValues(alpha: 0.08)
-                                        : InzxColors.border
-                                            .withValues(alpha: 0.3)),
-                                width: isSelected ? 1.8 : 1.0,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? _accentColor.withValues(alpha: 0.22)
-                                        : (_isDark
-                                            ? Colors.white.withValues(alpha: 0.06)
-                                            : Colors.black.withValues(alpha: 0.05)),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Icon(
-                                    styleIcon,
-                                    color: isSelected
-                                        ? _accentColor
-                                        : _textPrimary.withValues(alpha: 0.8),
-                                    size: 24,
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        title,
-                                        style: TextStyle(
-                                          fontSize: 15.5,
-                                          fontWeight: FontWeight.w700,
-                                          color: isSelected
-                                              ? _accentColor
-                                              : _textPrimary,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        desc,
-                                        style: TextStyle(
-                                          fontSize: 12.5,
-                                          height: 1.3,
-                                          color: _textSecondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                if (isSelected)
-                                  Icon(
-                                    Icons.check_circle_rounded,
-                                    color: _accentColor,
-                                    size: 22,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                  const SizedBox(height: 8),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -2876,6 +2459,184 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
 
   // ── OTA Debug ──────────────────────────────────────────────────────
 
+  /// Bottom sheet offering ways to support the project: GitHub Sponsors
+  /// and a UPI QR code for direct donations.
+  Future<void> _showSupportSheet() async {
+    final sheetBg = _isDark ? Colors.black : Colors.white;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: sheetBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 36,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: _isDark ? Colors.white24 : Colors.black12,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF48FB1).withValues(alpha: 0.16),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Iconsax.heart5,
+                        color: Color(0xFFF06292),
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Support Inzx',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: _textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Inzx is free and open source. Your support helps keep it '
+                  'alive and actively maintained. Every bit is appreciated!',
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.4,
+                    color: _textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 18),
+
+                // GitHub Sponsors
+                Material(
+                  color: _isDark
+                      ? Colors.white.withValues(alpha: 0.05)
+                      : Colors.black.withValues(alpha: 0.03),
+                  borderRadius: BorderRadius.circular(14),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: () {
+                      launchUrl(
+                        Uri.parse('https://github.com/sponsors/nirmaleeswar30'),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: _accentColor.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(Iconsax.card, color: _accentColor, size: 20),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'GitHub Sponsors',
+                                  style: TextStyle(
+                                    fontSize: 14.5,
+                                    fontWeight: FontWeight.w600,
+                                    color: _textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  'One-time or monthly on GitHub',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: _textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(Iconsax.export_3, size: 18, color: _textTertiary),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // UPI QR
+                Center(
+                  child: Text(
+                    'Or pay via UPI',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: _textSecondary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: _accentColor.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        'assets/upi.jpeg',
+                        width: 220,
+                        height: 220,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'Scan with any UPI app to donate',
+                    style: TextStyle(fontSize: 12, color: _textTertiary),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildOtaDebugSection() {
     final l10n = context.l10n;
     final updater = ShorebirdUpdater();
@@ -2884,6 +2645,17 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
       children: [
         _sectionHeader(l10n.appInfo, Iconsax.info_circle),
         const SizedBox(height: 12),
+        // Share behavior
+        _switchTile(
+          icon: Iconsax.share,
+          iconBg: _accentColor,
+          title: l10n.shareYoutubeMusicLinks,
+          subtitle: l10n.shareYoutubeMusicLinksSubtitle,
+          value: ref.watch(shareNativeLinksProvider),
+          onChanged: (val) =>
+              ref.read(shareNativeLinksProvider.notifier).setEnabled(val),
+        ),
+        Divider(color: _isDark ? Colors.white10 : Colors.black12, height: 16),
         // Check for App Updates
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -3042,7 +2814,7 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
             ),
           ),
           subtitle: Text(
-            'Support the development on GitHub',
+            'Support the development via GitHub Sponsors or UPI',
             style: TextStyle(fontSize: 12, color: _textSecondary),
           ),
           trailing: Icon(
@@ -3050,12 +2822,7 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
             size: 14,
             color: _textSecondary,
           ),
-          onTap: () {
-            launchUrl(
-              Uri.parse('https://github.com/sponsors/nirmaleeswar30'),
-              mode: LaunchMode.externalApplication,
-            );
-          },
+          onTap: _showSupportSheet,
         ),
         Divider(color: _isDark ? Colors.white10 : Colors.black12, height: 24),
         _debugRow(l10n.releaseBuild, kReleaseMode ? l10n.yes : l10n.no),
@@ -3306,7 +3073,7 @@ class _YTMusicSettingsScreenState extends ConsumerState<YTMusicSettingsScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(22),
                         child: Image.asset(
-                          'assets/icon/logo_transparent.png',
+                          _isDark ? 'assets/icon/logo_dark.png' : 'assets/icon/logo_light.png',
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,

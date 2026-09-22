@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/design_system/design_system.dart';
 import '../core/l10n/app_localizations_x.dart';
+import '../../core/providers/theme_provider.dart';
 import '../providers/providers.dart';
 import '../services/playback/playback_data.dart';
 
@@ -36,6 +37,8 @@ class AudioSettingsScreen extends ConsumerWidget {
     final crossfadeDurationMs = ref.watch(crossfadeDurationMsProvider);
     final streamCacheUsageAsync = ref.watch(streamAudioCacheUsageBytesProvider);
     final jioSaavnEnabled = ref.watch(jioSaavnEnabledProvider);
+    final preferAudioVersions = ref.watch(preferAudioVersionsProvider);
+    final showSmartAudioRouting = ref.watch(showSmartAudioRoutingProvider);
     final playerService = ref.watch(audioPlayerServiceProvider);
 
     return Scaffold(
@@ -249,6 +252,123 @@ class AudioSettingsScreen extends ConsumerWidget {
             onMaxConcurrentChanged: (value) async {
               await playerService.setStreamCacheMaxConcurrent(value);
             },
+          ),
+
+          const SizedBox(height: 32),
+
+          // Playback behavior section
+          Text(
+            l10n.playback,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : InzxColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.playbackSectionSubtitle,
+            style: TextStyle(
+              fontSize: 14,
+              color: isDark ? Colors.white54 : InzxColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildToggleTile(
+            isDark: isDark,
+            accentColor: accentColor,
+            icon: Iconsax.music,
+            title: l10n.preferAudioVersions,
+            subtitle: l10n.preferAudioVersionsSubtitle,
+            value: preferAudioVersions,
+            onChanged: (val) =>
+                ref.read(preferAudioVersionsProvider.notifier).setEnabled(val),
+          ),
+          const SizedBox(height: 12),
+          _buildToggleTile(
+            isDark: isDark,
+            accentColor: accentColor,
+            icon: Iconsax.volume_high,
+            title: l10n.smartAudioRouting,
+            subtitle: l10n.smartAudioRoutingSubtitle,
+            value: showSmartAudioRouting,
+            onChanged: (val) => ref
+                .read(showSmartAudioRoutingProvider.notifier)
+                .setEnabled(val),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggleTile({
+    required bool isDark,
+    required Color accentColor,
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.05)
+            : Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark ? Colors.white12 : Colors.grey.shade300,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: value
+                  ? accentColor.withValues(alpha: 0.2)
+                  : (isDark
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.grey.shade200),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              icon,
+              color: value
+                  ? accentColor
+                  : (isDark ? Colors.white54 : Colors.grey.shade600),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : InzxColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: isDark ? Colors.white54 : InzxColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _buildCustomSwitch(
+            value: value,
+            accentColor: accentColor,
+            isDark: isDark,
+            onChanged: onChanged,
           ),
         ],
       ),
