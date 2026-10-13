@@ -1,1 +1,54 @@
-build for armv7a
+
+name: Build Inzx APK ARMv7-A
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Prepare environment
+        run: |
+          if [ -f .env.example ]; then
+            cp .env.example .env
+          fi
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Generate localization
+        run: flutter gen-l10n
+
+      - name: Build ARMv7-A APK
+        run: flutter build apk --release --target-platform android-arm
+
+      - name: Upload ARMv7-A APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: inzx-armv7a-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 7
